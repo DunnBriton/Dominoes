@@ -6,8 +6,13 @@ public class Tiles {
     public Canvas shape;
 
     public Tiles(int a, int b){
-        this.left = a;
-        this.right = b;
+        left = a;
+        right = b;
         shape = new Canvas();
+    }
+
+    @Override
+    public String toString() {
+        return "[" + left + "," + right + "]";
     }
 }
