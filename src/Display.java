@@ -28,6 +28,8 @@ public class Display {
         HBox bottomPane = new HBox(btn);
         bottomPane.setAlignment(Pos.BOTTOM_CENTER);
 
+        
+
         mainPane.setBottom(bottomPane);
         mainPane.setTop(topPane);
 
