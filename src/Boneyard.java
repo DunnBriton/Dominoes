@@ -16,12 +16,18 @@ public class Boneyard {
         Collections.shuffle(boneyard);
     }
 
-    public static void drawDomino(ArrayList<Tiles> hand){
+    public static Tiles drawDomino(ArrayList<Tiles> hand){
         Random random = new Random();
-        int x = random.nextInt(0, boneyard.size());
-        Tiles holder = boneyard.get(x);
+        if(boneyard.size() > 1){
+            i = random.nextInt(0, boneyard.size()-1);
+        }
+        else{
+            i = random.nextInt(0, boneyard.size());
+        }
+        Tiles holder = boneyard.get(i);
 
         hand.add(holder);
-        boneyard.remove(x);
+        boneyard.remove(i);
+        return holder;
     }
 }

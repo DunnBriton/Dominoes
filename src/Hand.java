@@ -20,10 +20,9 @@ public class Hand {
         StringBuilder holder = new StringBuilder();
 
         for(i=0;i<hand.size(); i++){
-            holder.append("[").append(hand.get(i).left).append(",");
-            holder.append(hand.get(i).right).append("]");
+            holder.append(hand.get(i).left).append("  ");
+            holder.append(hand.get(i).right);
         }
-
         return holder.toString();
     }
 }
