@@ -4,7 +4,7 @@ public class Tiles {
     // Variables to store left and right side of domino tile values.
     public int left, right;
     // Currently, unused. Intended for GUI use.
-    public Canvas shape = new Canvas();
+    public Canvas shape;
 
     /**
      * Tiles used to create a new domino tile.
@@ -14,8 +14,15 @@ public class Tiles {
     public Tiles(int a, int b){
         left = a;
         right = b;
+        shape = new Canvas();
+    }
 
-        shape.setHeight(50);
-        shape.setWidth(100);
+    /**
+     * Override used to output a domino tile.
+     * @return - Returns string that should be outputted.
+     */
+    @Override
+    public String toString() {
+        return "[" + left + "  " + right + "]";
     }
 }

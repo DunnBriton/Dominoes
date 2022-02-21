@@ -23,4 +23,19 @@ public class Hand {
             Boneyard.drawDomino(holder);
         }
     }
+
+    /**
+     * Override used to output a Hand.
+     * @return - Returns string that should be outputted.
+     */
+    @Override
+    public String toString(){
+        StringBuilder holder = new StringBuilder();
+
+        for (Tiles tiles : hand) {
+            holder.append(tiles.left).append("  ");
+            holder.append(tiles.right);
+        }
+        return holder.toString();
+    }
 }

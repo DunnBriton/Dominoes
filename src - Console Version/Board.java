@@ -50,4 +50,29 @@ public class Board {
 
     }
 
+    /**
+     * outputBoard is used to output the current board to console.
+     * Note: Currently shifts dominoes so top and bottom may switch.
+     * Return void.
+     */
+    public static void outputBoard(){
+        // String builders for top and bottom line outputs of board.
+        StringBuilder oneHold = new StringBuilder();
+        StringBuilder twoHold = new StringBuilder();
+
+        // Adds needed offset.
+        twoHold.append("   ");
+        // Loops over the current board and adds domino tiles to builders.
+        for(int i=0;i<board.size();i++){
+            if(i % 2 == 0){
+                oneHold.append(board.get(i).toString());
+            }
+            else{
+                twoHold.append(board.get(i).toString());
+            }
+        }
+        // Assigns value in MainGameLoop to call from.
+        MainGameLoop.lineOne = oneHold.toString();
+        MainGameLoop.lineTwo = twoHold.toString();
+    }
 }
