@@ -10,14 +10,13 @@ public class MainGameLoop extends Application {
     static Computer computerPlayer;
     // Booleans used in various checks.
     static boolean hasPlayed, humanUnableToPlay, computerUnableToPlay;
-    // Variable for the selected domino.
-    static int dominoSelected;
 
     @Override
     public void start(Stage primaryStage) {
         Boneyard.main();
         humanPlayer = new Human();
         computerPlayer = new Computer();
+        //Board.outputBoard();
 
         Display.main(primaryStage);
 
@@ -35,9 +34,10 @@ public class MainGameLoop extends Application {
         Display.drawButton.setOnAction(event -> {
             if(Boneyard.boneyard.size() > 0){
                 // Draw from boneyard, update text, switch turn.
-                Boneyard.drawDomino(humanPlayer.humanHand.hand);
+                Tiles holder = Boneyard.drawDomino(humanPlayer.humanHand.hand);
                 Display.gameInfo.setText("Boneyard contains "+Boneyard.boneyard.size()+" dominoes.\n" +
                         "Computer has "+MainGameLoop.computerPlayer.computerHand.hand.size()+" dominoes.");
+                Display.playerItems.getChildren().add(0,holder.dominoShape);
                 computerTurn();
             }
         });
@@ -47,9 +47,13 @@ public class MainGameLoop extends Application {
             checkWin(humanPlayer.humanHand.hand);
             computerTurn();
         });
-
     }
 
+    /**
+     * computerTurn is where the computer attempts to play.
+     * Only plays first found move.
+     * Return void.
+     */
     public static void computerTurn(){
 
         computerUnableToPlay = false;
@@ -61,6 +65,7 @@ public class MainGameLoop extends Application {
             hasPlayed = false;
             // Checks hand for possible moves and plays first find.
             for(int j=0;j<computerPlayer.computerHand.hand.size();j++){
+
                 // Used as holder for domino side values.
                 int x;
                 // Gets random int based on hand size.
@@ -191,15 +196,27 @@ public class MainGameLoop extends Application {
         // Checks for hand and boneyard to be empty.
         if(hand.size() == 0 && Boneyard.boneyard.size() == 0){
             if(hand == humanPlayer.humanHand.hand){
-                Display.gameInfo.setText("Human Player Wins.\nGame Over!\nPlease exit and restart.");
+                Display.gameInfo.setText("""
+                        Human Player Wins.
+                        Game Over!
+                        Please exit and restart.""");
+                disableButtons();
             }
             else if(hand == computerPlayer.computerHand.hand){
-                Display.gameInfo.setText("Computer Player Wins.\nGame Over!\nPlease exit and restart.");
+                Display.gameInfo.setText("""
+                        Computer Player Wins.
+                        Game Over!
+                        Please exit and restart.""");
+                disableButtons();
             }
         }
         // Checks if both players could not play in a row, causing unplayable.
         if(humanUnableToPlay && computerUnableToPlay){
-            Display.gameInfo.setText("Neither player can play.\nGame Over!\nPlease exit and restart.");
+            Display.gameInfo.setText("""
+                    Neither player can play.
+                    Game Over!
+                    Please exit and restart.""");
+            disableButtons();
         }
     }
 
@@ -216,5 +233,16 @@ public class MainGameLoop extends Application {
         humanTurn();
         // Covers for continuation after recursion.
         hasPlayed = true;
+    }
+
+    /**
+     * disableButtons disables and hides the two buttons when needed.
+     * Return void.
+     */
+    public static void disableButtons(){
+        Display.drawButton.setDisable(true);
+        Display.drawButton.setVisible(false);
+        Display.noPlayButton.setDisable(true);
+        Display.noPlayButton.setVisible(false);
     }
 }

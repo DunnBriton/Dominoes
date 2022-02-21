@@ -1,16 +1,16 @@
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
-
-import java.awt.*;
-
-import static java.awt.Color.green;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 public class Tiles {
     // Variables to store left and right side of domino tile values.
     public int left, right;
-    // Currently, unused. Intended for GUI use.
-    public Canvas dominoShape;
+    // Hboxes used to create dots on dominoes.
+    public HBox dominoShape, rowOne, rowTwo, rowThree;
 
     /**
      * Tiles used to create a new domino tile.
@@ -20,15 +20,109 @@ public class Tiles {
     public Tiles(int a, int b){
         left = a;
         right = b;
-        dominoShape = new Canvas();
-        dominoShape.setWidth(Display.SCREEN_WIDTH);
-        dominoShape.setHeight(Display.SCREEN_HEIGHT);
 
-        GraphicsContext gc = dominoShape.getGraphicsContext2D();
-        gc.beginPath();
-        gc.moveTo(0,0);
-        gc.lineTo(100,100);
-        gc.stroke();
+        Rectangle recA = new Rectangle(40, 40);
+        Rectangle recB = new Rectangle(40,40);
+        Rectangle recC = new Rectangle(0, 40);
 
+        VBox leftDots = new VBox();
+        VBox rightDots = new VBox();
+        leftDots.setAlignment(Pos.CENTER);
+        rightDots.setAlignment(Pos.CENTER);
+
+        setRowValues();
+        switch (a){
+            case 1 -> {
+                rowOne.getChildren().add(new Circle(5));
+                leftDots.getChildren().add(rowOne);
+            }
+            case 2 -> {
+                rowOne.getChildren().addAll(new Circle(5),new Circle(5));
+                leftDots.getChildren().add(rowOne);
+            }
+            case 3 -> {
+                rowOne.getChildren().addAll(new Circle(5),new Circle(5),new Circle(5));
+                leftDots.getChildren().add(rowOne);
+            }
+            case 4 -> {
+                rowOne.getChildren().addAll(new Circle(5),new Circle(5));
+                rowTwo.getChildren().addAll(new Circle(5),new Circle(5));
+                leftDots.getChildren().addAll(rowOne,rowTwo);
+            }
+            case 5 -> {
+                rowOne.getChildren().addAll(new Circle(5),new Circle(5));
+                rowTwo.getChildren().addAll(new Circle(5));
+                rowThree.getChildren().addAll(new Circle(5), new Circle(5));
+                leftDots.getChildren().addAll(rowOne,rowTwo,rowThree);
+            }
+            case 6 -> {
+                rowOne.getChildren().addAll(new Circle(5), new Circle(5), new Circle(5));
+                rowTwo.getChildren().addAll(new Circle(5), new Circle(5), new Circle(5));
+                leftDots.getChildren().addAll(rowOne,rowTwo);
+            }
+        }
+
+        setRowValues();
+        switch (b){
+            case 1 -> {
+                rowOne.getChildren().add(new Circle(5));
+                rightDots.getChildren().add(rowOne);
+            }
+            case 2 -> {
+                rowOne.getChildren().addAll(new Circle(5),new Circle(5));
+                rightDots.getChildren().add(rowOne);
+            }
+            case 3 -> {
+                rowOne.getChildren().addAll(new Circle(5),new Circle(5),new Circle(5));
+                rightDots.getChildren().add(rowOne);
+            }
+            case 4 -> {
+                rowOne.getChildren().addAll(new Circle(5),new Circle(5));
+                rowTwo.getChildren().addAll(new Circle(5),new Circle(5));
+                rightDots.getChildren().addAll(rowOne,rowTwo);
+            }
+            case 5 -> {
+                rowOne.getChildren().addAll(new Circle(5),new Circle(5));
+                rowTwo.getChildren().addAll(new Circle(5));
+                rowThree.getChildren().addAll(new Circle(5), new Circle(5));
+                rightDots.getChildren().addAll(rowOne,rowThree,rowTwo);
+            }
+            case 6 -> {
+                rowOne.getChildren().addAll(new Circle(5), new Circle(5), new Circle(5));
+                rowTwo.getChildren().addAll(new Circle(5), new Circle(5), new Circle(5));
+                rightDots.getChildren().addAll(rowOne,rowTwo);
+            }
+        }
+
+        StackPane leftHalf = new StackPane(recA, leftDots);
+        StackPane rightHalf = new StackPane(recB, rightDots);
+
+        recA.setFill(Paint.valueOf("#FFFDD0"));
+        recA.setStroke(Paint.valueOf("#084600"));
+        recB.setFill(Paint.valueOf("#FFFDD0"));
+        recB.setStroke(Paint.valueOf("#084600"));
+        recC.setStroke(Paint.valueOf("red"));
+
+        dominoShape = new HBox(leftHalf, recC, rightHalf);
+    }
+
+    /**
+     * setRowValues used to clean code up a bit and let the
+     * function be called instead of putting the code twice.
+     * Return void.
+     */
+    public void setRowValues(){
+        // Reset box values.
+        rowOne = new HBox();
+        rowTwo = new HBox();
+        rowThree = new HBox();
+        // Reset spacing.
+        rowOne.setSpacing(2);
+        rowTwo.setSpacing(2);
+        rowThree.setSpacing(2);
+        // Reset alignment.
+        rowOne.setAlignment(Pos.TOP_CENTER);
+        rowTwo.setAlignment(Pos.BOTTOM_CENTER);
+        rowThree.setAlignment(Pos.CENTER);
     }
 }

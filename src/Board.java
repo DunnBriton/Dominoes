@@ -5,6 +5,67 @@ public class Board {
     static ArrayList<Tiles> board = new ArrayList<>();
 
     /**
+     * validMoveCheck takes selected domino's index, what side of the board,
+     * and what hand to check. Used to check if a move is possible.
+     * @param selectedDomino - Index of selected domino.
+     */
+    public static void playIfPossible(Tiles selectedDomino,
+                                      ArrayList<Tiles> hand){
+        // Plays if the selected domino has a valid play.
+        if(board.size() == 0){
+            play(selectedDomino, "l", hand);
+        }
+        else if(selectedDomino.left == board.get(board.size()-1).right){
+            play(selectedDomino, "r", hand);
+        }
+        else if(selectedDomino.right == board.get(0).left){
+            play(selectedDomino, "l", hand);
+        }
+        else if(selectedDomino.left == board.get(board.size()-1).left){
+            int holder = selectedDomino.left;
+            selectedDomino.left = selectedDomino.right;
+            selectedDomino.right = holder;
+            play(selectedDomino, "l", hand);
+        }
+        else if(selectedDomino.right == board.get(0).right){
+            int holder = selectedDomino.left;
+            selectedDomino.left = selectedDomino.right;
+            selectedDomino.right = holder;
+            play(selectedDomino, "r", hand);
+        }
+        else if((selectedDomino.left == 0) || (board
+                .get(board.size()-1).right == 0)){
+            play(selectedDomino, "r", hand);
+        }
+        else if((selectedDomino.right == 0) || (board
+                .get(0).left == 0)){
+            play(selectedDomino, "l", hand);
+        }
+    }
+
+    /**
+     * play is used to handle user clicks and
+     * play the selected domino if possible.
+     * @param selectedDomino - The domino selected by user.
+     * @param side           - The side of the board to be played on.
+     * @param hand           - Which hand is being acted upon.
+     * Return void.
+     */
+    public static void play(Tiles selectedDomino, String side,
+                            ArrayList<Tiles> hand){
+        if(side.equals("l")){
+            board.add(0, selectedDomino);
+            Display.gamePane.getChildren().add(0,selectedDomino.dominoShape);
+        }
+        else{
+            board.add(selectedDomino);
+            Display.gamePane.getChildren().add(selectedDomino.dominoShape);
+        }
+        MainGameLoop.humanUnableToPlay = false;
+        hand.remove(selectedDomino);
+    }
+
+    /**
      * playDomino takes a domino index, side of the board, and which
      * side of the domino to use. It plays the domino and removes from hand.
      * Does not check for valid move as that is checked before calling.
@@ -17,37 +78,14 @@ public class Board {
         // Plays domino on left or right side of board and removes from hand.
         if(side.equals("l")){
             board.add(0, hand.get(selectedDomino));
+            Display.gamePane.getChildren().add(0,hand
+                    .get(selectedDomino).dominoShape);
         }
         else{
             board.add(hand.get(selectedDomino));
+            Display.gamePane.getChildren().add(0,hand
+                    .get(selectedDomino).dominoShape);
         }
         hand.remove(selectedDomino);
     }
-
-    /**
-     * validMoveCheck takes selected domino's index, what side of the board,
-     * and what hand to check. Used to check if a desired move is possible.
-     * @param selectedDomino - Index of selected domino.
-     * @param side           - String for side to check. (l or r).
-     * @param hand           - What hand to act on. (Human or Computer).
-     * @return               - Returns boolean if move can be done or not.
-     */
-    public static boolean validMoveCheck(int selectedDomino,String side,
-                                         ArrayList<Tiles> hand){
-        // Returns valid move if board is empty or if a value on
-        // domino lines up on desired side of the board.
-        if(board.size() == 0){
-            return true;
-        }
-        if((side.equals("l") && (hand.get(selectedDomino).right == board
-                .get(0).left || hand.get(selectedDomino).right == 0
-                || board.get(0).left == 0))){
-            return true;
-        }
-        return side.equals("r") && (hand.get(selectedDomino).left == board
-                .get(board.size()-1).right || hand.get(selectedDomino).left
-                == 0 || board.get(board.size()-1).right == 0);
-
-    }
-
 }

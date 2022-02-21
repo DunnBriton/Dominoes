@@ -1,66 +1,84 @@
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Display {
-    static final double SCREEN_HEIGHT = Screen.getPrimary().getBounds().getHeight();
-    static final double SCREEN_WIDTH  = Screen.getPrimary().getBounds().getWidth();
+    // doubles to store screen sizes.
+    static final double SCREEN_HEIGHT = Screen.getPrimary()
+            .getBounds().getHeight();
+    static final double SCREEN_WIDTH  = Screen.getPrimary()
+            .getBounds().getWidth();
+    // Buttons for drawing and unable to play.
     static Button drawButton, noPlayButton;
+    // Label for game info at the top of GUI.
     static Label gameInfo;
+    // Vbox, Tilepane, and HBox variables.
     static VBox topItems;
-    static Pane gamePane;
+    static TilePane gamePane;
+    static HBox playerItems;
 
+    /**
+     * main method where the GUI is created.
+     * @param primaryStage - Stage to put visuals on.
+     */
     public static void main(Stage primaryStage){
         // mainPane used as base for sections.
         BorderPane mainPane = new BorderPane();
-        mainPane.setBackground(new Background(new BackgroundFill(Color.BURLYWOOD, CornerRadii.EMPTY, Insets.EMPTY)));
+        mainPane.setBackground(new Background(new BackgroundFill(
+                Color.BURLYWOOD,CornerRadii.EMPTY, Insets.EMPTY)));
         mainPane.setPrefSize(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
 
-        // Code for top text. Using code folding while I'm coding.
-        {
-            // Text for the top of the GUI that says Dominoes.
-            Label topText = new Label("Dominoes!");
-            topText.setStyle("-fx-font: 24 arial");
-            // Info for player put at top of gamePane
-            gameInfo = new Label("Boneyard contains " + Boneyard.boneyard.size() + " dominoes.\n" +
-                    "Computer has " + MainGameLoop.computerPlayer.computerHand.hand.size() + " dominoes.");
-            //gameInfo.setTextAlignment(TextAlignment.CENTER);
-            gameInfo.setStyle("-fx-border-color:black; -fx-background-color: white;");
-            // Vbox used to put topText and gameInfo into top of mainPane.
-            topItems = new VBox(topText, gameInfo);
-            topItems.setAlignment(Pos.CENTER);
-            topItems.setSpacing(5);
-        }
+        // Text for the top of the GUI that says Dominoes.
+        Label topText = new Label("Dominoes!");
+        topText.setStyle("-fx-font: 24 arial");
 
+        // Info for player put at top of gamePane
+        gameInfo = new Label("Boneyard contains " + Boneyard.boneyard.size()
+                + " dominoes.\n" + "Computer has " + MainGameLoop
+                .computerPlayer.computerHand.hand.size() + " dominoes.");
+        gameInfo.setStyle("-fx-border-color:black; " +
+                "-fx-background-color: white;");
 
-        gamePane = new Pane();
-        Tiles test = new Tiles(3,3);
-        gamePane.setBackground(new Background(new BackgroundFill(Color.CORNSILK, CornerRadii.EMPTY, Insets.EMPTY)));
-        gamePane.getChildren().add(test.dominoShape);
+        // Vbox used to put topText and gameInfo into top of mainPane.
+        topItems = new VBox(topText, gameInfo);
+        topItems.setAlignment(Pos.CENTER);
+        topItems.setSpacing(5);
 
+        // TilePane used for where played dominoes will go.
+        gamePane = new TilePane();
+        gamePane.setBackground(new Background(new BackgroundFill(
+                Color.CORNSILK, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        // Adjust some settings for gamePane.
+        gamePane.setPrefSize(100,100);
+        gamePane.setVgap(3);
+        gamePane.setHgap(3);
+        gamePane.setMaxSize(SCREEN_WIDTH, SCREEN_HEIGHT/2);
+        gamePane.setAlignment(Pos.CENTER);
 
 
         // Button that causes you to draw from Boneyard.
         drawButton = new Button("Draw from Boneyard.");
         noPlayButton = new Button("Click if no moves possible.");
+
         //Vbox used to hold buttons in mainPane's bottom area.
         VBox twoButtons = new VBox();
         twoButtons.getChildren().addAll(drawButton, noPlayButton);
         twoButtons.setAlignment(Pos.CENTER);
 
-        // Hbox used to hold hand's dominos and Vbox of buttons.
-        HBox playerItems = new HBox(new Rectangle(50,50), twoButtons);
+        // Hbox used to hold hand's dominoes and Vbox of buttons.
+        playerItems = new HBox();
+        for(int i=0;i<MainGameLoop.humanPlayer.humanHand.hand.size();i++){
+            playerItems.getChildren().add(MainGameLoop.humanPlayer
+                    .humanHand.hand.get(i).dominoShape);
+        }
+        playerItems.getChildren().add(twoButtons);
         playerItems.setAlignment(Pos.BOTTOM_RIGHT);
 
         // Add topText, gamePane, and bottomPane to mainPane.
