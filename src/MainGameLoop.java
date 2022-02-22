@@ -1,7 +1,7 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MainGameLoop extends Application {
     // Human player object.
@@ -55,107 +55,18 @@ public class MainGameLoop extends Application {
      * Return void.
      */
     public static void computerTurn(){
-
         computerUnableToPlay = false;
-        Random random = new Random();
+        hasPlayed = false;
 
         // Path for if the computer still has dominoes in hand.
         if(computerPlayer.computerHand.hand.size() > 0){
-            // Reset unable to play value.
-            hasPlayed = false;
             // Checks hand for possible moves and plays first find.
             for(int j=0;j<computerPlayer.computerHand.hand.size();j++){
-
-                // Used as holder for domino side values.
-                int x;
-                // Gets random int based on hand size.
-                if(computerPlayer.computerHand.hand.size() > 1){
-                    x = random.nextInt(0, computerPlayer.computerHand
-                            .hand.size()-1);
-                }
-                else{
-                    x = random.nextInt(0, computerPlayer.computerHand
-                            .hand.size());
-                }
-                // Plays first domino if board is empty.
-                // Human always go first so a redundant check.
-                if(Board.board == null || Board.board.size() == 0){
-                    Board.playDomino(x, "l", computerPlayer.computerHand
-                            .hand);
-                    computerEndItems();
-                    break;
-                }
-                // Checks if left domino on board is a wild.
-                else if(Board.board.get(0).left == 0){
-                    Board.playDomino(x, "l", computerPlayer.computerHand
-                            .hand);
-                    computerEndItems();
-                    break;
-                }
-                // Checks if right domino on board is a wild.
-                else if(Board.board.get(Board.board.size()-1).right == 0){
-                    Board.playDomino(x, "r", computerPlayer.computerHand
-                            .hand);
-                    computerEndItems();
-                    break;
-                }
-                // Checks if left side of played domino is a wild.
-                else if(computerPlayer.computerHand.hand.get(j).left == 0){
+                if(!hasPlayed && Board.checkPlay(computerPlayer
+                        .computerHand.hand.get(j))){
                     Board.playDomino(computerPlayer.computerHand.hand
-                            .get(j).left, "r", computerPlayer
-                            .computerHand.hand);
+                            .get(j), computerPlayer.computerHand.hand);
                     computerEndItems();
-                    break;
-                }
-                // Checks if right side of played domino is a wild.
-                else if(computerPlayer.computerHand.hand.get(j).right == 0){
-                    Board.playDomino(computerPlayer.computerHand.hand
-                            .get(j).right, "l", computerPlayer
-                            .computerHand.hand);
-                    computerEndItems();
-                    break;
-                }
-                // Checks if left domino value is equal to right option.
-                else if(computerPlayer.computerHand.hand.get(j).left ==
-                        Board.board.get(Board.board.size()-1).right){
-                    Board.playDomino(j,"r", computerPlayer.computerHand
-                            .hand);
-                    computerEndItems();
-                    break;
-                }
-                // Checks if left domino value is equal to left option.
-                else if(computerPlayer.computerHand.hand.get(j).left ==
-                        Board.board.get(0).left){
-                    int left = computerPlayer.computerHand.hand.get(j)
-                            .left;
-                    computerPlayer.computerHand.hand.get(j).left =
-                            computerPlayer.computerHand.hand.get(j).right;
-                    computerPlayer.computerHand.hand.get(j).right = left;
-                    Board.playDomino(j, "l", computerPlayer.computerHand
-                            .hand);
-                    computerEndItems();
-                    break;
-                }
-                // Checks if right domino value is equal to left option.
-                else if(computerPlayer.computerHand.hand.get(j).right ==
-                        Board.board.get(0).left){
-                    Board.playDomino(j,"l", computerPlayer.computerHand
-                            .hand);
-                    computerEndItems();
-                    break;
-                }
-                // Checks if right domino value is equal to right option.
-                else if(computerPlayer.computerHand.hand.get(j).right ==
-                        Board.board.get(Board.board.size()-1).right){
-                    int left = computerPlayer.computerHand.hand.get(j)
-                            .left;
-                    computerPlayer.computerHand.hand.get(j).left =
-                            computerPlayer.computerHand.hand.get(j).right;
-                    computerPlayer.computerHand.hand.get(j).right = left;
-                    Board.playDomino(j, "r", computerPlayer.computerHand
-                            .hand);
-                    computerEndItems();
-                    break;
                 }
             }
             // Draws boneyard if no move was found.
@@ -168,7 +79,6 @@ public class MainGameLoop extends Application {
             else if(!hasPlayed){
                 computerUnableToPlay = true;
                 checkWin(computerPlayer.computerHand.hand);
-
                 humanTurn();
             }
         }
@@ -230,6 +140,10 @@ public class MainGameLoop extends Application {
         computerUnableToPlay = false;
         // Check if move caused a game ending condition.
         checkWin(computerPlayer.computerHand.hand);
+        Display.gameInfo.setText("Boneyard contains "+Boneyard
+                .boneyard.size()+" dominoes.\n" +
+                "Computer has "+MainGameLoop.computerPlayer
+                .computerHand.hand.size()+" dominoes.");
         humanTurn();
         // Covers for continuation after recursion.
         hasPlayed = true;

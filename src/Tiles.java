@@ -21,6 +21,26 @@ public class Tiles {
         left = a;
         right = b;
 
+        dominoShape = drawDomino(a, b);
+    }
+
+    /**
+     * setRowValues used to clean code up a bit and let the
+     * function be called instead of putting the code twice.
+     * Return void.
+     */
+    public void setRowValues(){
+        // Reset box values.
+        rowOne = new HBox();
+        rowTwo = new HBox();
+        rowThree = new HBox();
+        // Reset alignment.
+        rowOne.setAlignment(Pos.TOP_CENTER);
+        rowTwo.setAlignment(Pos.BOTTOM_CENTER);
+        rowThree.setAlignment(Pos.CENTER);
+    }
+
+    public HBox drawDomino(int a, int b){
         Rectangle recA = new Rectangle(40, 40);
         Rectangle recB = new Rectangle(40,40);
         Rectangle recC = new Rectangle(0, 40);
@@ -85,7 +105,7 @@ public class Tiles {
                 rowOne.getChildren().addAll(new Circle(5),new Circle(5));
                 rowTwo.getChildren().addAll(new Circle(5));
                 rowThree.getChildren().addAll(new Circle(5), new Circle(5));
-                rightDots.getChildren().addAll(rowOne,rowThree,rowTwo);
+                rightDots.getChildren().addAll(rowOne,rowTwo,rowThree);
             }
             case 6 -> {
                 rowOne.getChildren().addAll(new Circle(5), new Circle(5), new Circle(5));
@@ -101,28 +121,7 @@ public class Tiles {
         recA.setStroke(Paint.valueOf("#084600"));
         recB.setFill(Paint.valueOf("#FFFDD0"));
         recB.setStroke(Paint.valueOf("#084600"));
-        recC.setStroke(Paint.valueOf("red"));
 
-        dominoShape = new HBox(leftHalf, recC, rightHalf);
-    }
-
-    /**
-     * setRowValues used to clean code up a bit and let the
-     * function be called instead of putting the code twice.
-     * Return void.
-     */
-    public void setRowValues(){
-        // Reset box values.
-        rowOne = new HBox();
-        rowTwo = new HBox();
-        rowThree = new HBox();
-        // Reset spacing.
-        rowOne.setSpacing(2);
-        rowTwo.setSpacing(2);
-        rowThree.setSpacing(2);
-        // Reset alignment.
-        rowOne.setAlignment(Pos.TOP_CENTER);
-        rowTwo.setAlignment(Pos.BOTTOM_CENTER);
-        rowThree.setAlignment(Pos.CENTER);
+        return new HBox(leftHalf, recC, rightHalf);
     }
 }

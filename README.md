@@ -26,6 +26,7 @@ How to Use:
 - Click on domino in hand, draw domino, or declare unplayable for turn.
 - Visually see how many in users hand and text tells info 
     about boneyard and computer domino amounts.
+- Draw if unable to play and second button to skip if you cannot play or draw.
 
 Known Bugs/Unfinished features:
 - Winner is currently determined by first to have zero dominoes
@@ -34,8 +35,8 @@ Known Bugs/Unfinished features:
   implement draw tell play or fail.
 - Does not check if player can play before drawing.
 - Dominoes do not line up correctly when played to board.
-- Dominoes are sometimes unable to be played if rotation is not correct.
-- Computer's plays are invisible. Invisible dominoes are still in logic 
+- Dominoes are sometimes unable to be played for unknown reasons.
+- Computer's plays are sometimes invisible. Invisible dominoes are still in logic 
     so the game does not break from this and game can continue if you 
     guess the correct match.
 - Other bugs most likely exist since the code has not been fully tested.

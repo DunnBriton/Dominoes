@@ -74,6 +74,7 @@ public class Display {
 
         // Hbox used to hold hand's dominoes and Vbox of buttons.
         playerItems = new HBox();
+        playerItems.setSpacing(2);
         for(int i=0;i<MainGameLoop.humanPlayer.humanHand.hand.size();i++){
             playerItems.getChildren().add(MainGameLoop.humanPlayer
                     .humanHand.hand.get(i).dominoShape);

@@ -16,10 +16,13 @@ public class Boneyard {
             for(int j=i; j<=6; j++){
                 Tiles tile = new Tiles(i,j);
 
-                tile.dominoShape.setOnMouseClicked(event -> Board
-                        .playIfPossible(tile, MainGameLoop
-                                .humanPlayer.humanHand.hand));
-
+                tile.dominoShape.setOnMouseClicked(event -> {
+                    if(Board.checkPlay(tile)){
+                        Board.playDomino(tile, MainGameLoop.humanPlayer
+                                .humanHand.hand);
+                        MainGameLoop.computerTurn();
+                    }
+                });
                 boneyard.add(tile);
             }
         }
